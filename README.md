@@ -1,0 +1,22 @@
+kohana-makefile
+===============
+
+Automate common boring tasks related to the Kohana framework.
+
+This Makefile is designed to increase productivity when doing web development
+under the Kohana framework. It allow you to install a new application, set the
+permissions and much more.
+
+Such a Makefile is very practical for settings permissions and SELinux context
+on a production server on which you have SSH access.
+
+## So far, it
+* install a new Kohana application
+* cleans the cache
+* minify resources (js and css)
+* run PHPUnit tests
+* generate the documentation
+* makes you efficient at doing everything above
+
+That would be really nice to have such a tool bundled with Kohana, so whenever
+it gets interesting, I will submit it.
