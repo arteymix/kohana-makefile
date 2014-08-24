@@ -17,7 +17,7 @@ VERSION=3.3
 # modules
 MODULES=modules/auth modules/orm
 
-# cache files
+# cache and logs folders
 CACHE=application/cache
 LOGS=application/logs
 
@@ -98,6 +98,6 @@ coverage: clean
 documentation:
 	$(DOC) $(DOCFLAGS)
 
-# clean the kohana cache folder
+# clean the kohana cache files
 clean:
-	rm -f $(shell find $(CACHE) -type f)
+	rm -f $(shell find $(CACHE) -type f -not -name '.*')
