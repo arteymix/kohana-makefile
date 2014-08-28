@@ -40,6 +40,9 @@ JS=$(shell find assets/js/ -type f -name '*.js' -not -name '*.min.js')
 PHPUNIT=phpunit
 PHPUNITFLAGS=
 
+# Include specific Makefile
+-include application/Makefile
+
 all: permissions clean minify
 
 .git:
