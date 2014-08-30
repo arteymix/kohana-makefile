@@ -15,7 +15,7 @@ KOHANA=index.php .gitignore example.htaccess composer.json application/bootstrap
 VERSION=3.3
 
 # modules
-MODULES=modules/auth modules/orm
+MODULES=auth cache database orm
 
 # cache and logs folders
 CACHE=application/cache
@@ -45,15 +45,16 @@ PHPUNITFLAGS=
 
 all: permissions clean minify
 
+# initialize a git repository
 .git:
 	git init
 
 # install kohana
-install: $(KOHANA) assets application .git system $(MODULES)
+install: $(KOHANA) assets/css assets/js application .git system $(addprefix modules/, $(MODULES))
 
 # create assets folders
-assets:
-	mkdir -p assets/{css,js}
+assets/%:
+	mkdir -p $@
 
 application:
 	mkdir -p application/{cache,classes,config,i18n,logs,messages,views}
@@ -64,8 +65,8 @@ system:
 	git submodule add https://github.com/kohana/core.git system
 
 # install kohana module
-$(MODULES):
-	git submodule add https://github.com/kohana/$@.git $@
+modules/%:
+	git submodule add https://github.com/kohana/$(notdir $@).git $@
 
 # download kohana file
 $(KOHANA):
