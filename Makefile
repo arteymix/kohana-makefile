@@ -40,10 +40,14 @@ JS=$(shell find assets/js/ -type f -name '*.js' -not -name '*.min.js')
 PHPUNIT=phpunit
 PHPUNITFLAGS=
 
-# Include specific Makefile
--include application/Makefile
+# phpcs
+PHPCS=phpcs
+PHPCSFLAGS=
 
 all: permissions clean minify
+
+# Include specific Makefile
+-include application/Makefile
 
 # initialize a git repository
 .git:
@@ -101,6 +105,10 @@ coverage: clean
 # generate the documentation
 documentation:
 	$(DOC) $(DOCFLAGS)
+
+# sniff code for errors
+codesniffer:
+	$(PHPCS) $(PHPCSFLAGS) application/{classes,views}
 
 # clean the kohana cache files
 clean:
