@@ -108,7 +108,7 @@ documentation:
 
 # sniff code for errors
 codesniffer:
-	$(PHPCS) $(PHPCSFLAGS) application/{classes,views}
+	$(PHPCS) $(PHPCSFLAGS) application/classes
 
 # clean the kohana cache files
 clean:
