@@ -77,13 +77,17 @@ $(KOHANA):
 	wget https://raw.githubusercontent.com/kohana/kohana/$(VERSION)/master/$@
 
 # update permissions and SELinux context
-permissions:
-	chown -R $(USER):$(GROUP) $(CACHE) $(LOGS)
+permissions: permissions-mod permissions-selinux permissions-owner
+
+permissions-mod:
 	chmod -R 777 $(CACHE) $(LOGS)
-ifeq ($(shell selinuxenabled; echo $$?), 0)
+
+permissions-selinux:
 	chcon -R -t httpd_sys_script_rw_t $(CACHE)
 	chcon -R -t httpd_sys_script_ra_t $(LOGS)
-endif
+
+permissions-owner:
+	chown -R $(USER):$(GROUP) $(CACHE) $(LOGS)
 
 # minify resources
 minify: $(patsubst %.css, %.min.css, $(CSS)) $(patsubst %.js, %.min.js, $(JS))
