@@ -49,33 +49,6 @@ all: permissions clean minify
 # Include specific Makefile
 -include application/Makefile
 
-# initialize a git repository
-.git:
-	git init
-
-# install kohana
-install: $(KOHANA) assets/css assets/js application .git system $(addprefix modules/, $(MODULES))
-
-# create assets folders
-assets/%:
-	mkdir -p $@
-
-application:
-	mkdir -p application/{cache,classes,config,i18n,logs,messages,views}
-	touch application/{cache,logs}/.gitignore
-
-# install kohana core
-system:
-	git submodule add https://github.com/kohana/core.git system
-
-# install kohana module
-modules/%:
-	git submodule add https://github.com/kohana/$(notdir $@).git $@
-
-# download kohana file
-$(KOHANA):
-	wget https://raw.githubusercontent.com/kohana/kohana/$(VERSION)/master/$@
-
 # update permissions and SELinux context
 permissions: permissions-mod permissions-selinux permissions-owner
 

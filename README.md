@@ -10,16 +10,16 @@ permissions and much more.
 Such a Makefile is very practical for settings permissions and SELinux context
 on a production server on which you have SSH access.
 
-## So far, it
-* install a new Kohana application
+So far, it
+----------
 * cleans the cache
 * minify resources (js and css)
 * run PHPUnit tests
 * generate the documentation
 * makes you efficient at doing everything above
 
-## Installation
-
+Installation
+------------
 ```bash
 git submodule add https://github.com/arteymix/kohana-makefile.git modules/makefile
 ln -s modules/makefile/Makefile Makefile
@@ -33,7 +33,6 @@ CACHE += modules/twig/cache
 
 Then you run it
 ```bash
-make install     # install Kohana
 make test        # run PHPUnit
 make clean       # delete the cache
 make minify      # minify resources in assets/js/* and assets/css/*
