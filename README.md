@@ -4,8 +4,7 @@ kohana-makefile
 Automate common boring tasks related to the Kohana framework.
 
 This Makefile is designed to increase productivity when doing web development
-under the Kohana framework. It allow you to install a new application, set the
-permissions and much more.
+under the Kohana framework. It allow you to set the permissions and much more.
 
 Such a Makefile is very practical for settings permissions and SELinux context
 on a production server on which you have SSH access.
@@ -25,7 +24,7 @@ git submodule add https://github.com/arteymix/kohana-makefile.git modules/makefi
 ln -s modules/makefile/Makefile Makefile
 ```
 
-Once installed, you can extend it by defining a makefile in 
+Once installed, you can extend it by defining a Makefile in 
 `application/Makefile`:
 ```make
 CACHE += modules/twig/cache

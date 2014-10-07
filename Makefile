@@ -1,21 +1,11 @@
 # Kohana Makefile
 #
-# wget and git are required
-# phpunit, cssmin and uglifyjs are suggested
-#
-# You may use a different minifier based on what's available 
-# on your system.
+# PHPUnit, ApiGen, cssmin and uglifyjs are suggested, but you can override them 
+# in a specific Makefile located in application/Makefile.
 
 # user and group for the web server
 USER=apache
 GROUP=apache
-
-# kohana files
-KOHANA=index.php .gitignore example.htaccess composer.json application/bootstrap.php
-VERSION=3.3
-
-# modules
-MODULES=auth cache database orm
 
 # cache and logs folders
 CACHE=application/cache
@@ -40,6 +30,10 @@ JS=$(shell find assets/js/ -type f -name '*.js' -not -name '*.min.js')
 PHPUNIT=phpunit
 PHPUNITFLAGS=
 
+# coverage
+COVERAGE=$(PHPUNIT)
+COVERAGEFLAGS=$(PHPUNITFLAGS) --coverage-html
+
 # phpcs
 PHPCS=phpcs
 PHPCSFLAGS=
@@ -52,13 +46,16 @@ all: permissions clean minify
 # update permissions and SELinux context
 permissions: permissions-mod permissions-selinux permissions-owner
 
+# set mod on cache and logs
 permissions-mod:
 	chmod -R 777 $(CACHE) $(LOGS)
 
+# set SELinux contexts on cache and logs
 permissions-selinux:
 	chcon -R -t httpd_sys_script_rw_t $(CACHE)
 	chcon -R -t httpd_sys_script_ra_t $(LOGS)
 
+# set owner on cache and logs
 permissions-owner:
 	chown -R $(USER):$(GROUP) $(CACHE) $(LOGS)
 
@@ -76,12 +73,9 @@ test: clean
 	$(PHPUNIT) $(PHPUNITFLAGS)
 
 # produce an html coverage
+.PHONY: coverage
 coverage: clean
-	$(PHPUNIT) $(PHPUNITFLAGS) --coverage-html coverage
-
-# generate the documentation
-documentation:
-	$(DOC) $(DOCFLAGS)
+	$(COVERAGE) $(COVERAGEFLAGS) coverage
 
 # sniff code for errors
 codesniffer:
@@ -90,6 +84,10 @@ codesniffer:
 						   application/i18n \
 						   application/messages \
 						   application/views
+
+# generate the documentation
+documentation:
+	$(DOC) $(DOCFLAGS)
 
 # clean the kohana cache files
 clean:
