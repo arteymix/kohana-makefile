@@ -1,21 +1,16 @@
 # Kohana Makefile
 #
-# wget and git are required
-# phpunit, cssmin and uglifyjs are suggested
+# apigen, composer, phpunit, phpcs, cssmin and uglifyjs are suggested
 #
-# You may use a different minifier based on what's available 
-# on your system.
+# You may override any of the preceeding tools in your specific Makefile located 
+# in application/Makefile
 
 # user and group for the web server
 USER=apache
 GROUP=apache
 
-# kohana files
-KOHANA=index.php .gitignore example.htaccess composer.json application/bootstrap.php
-VERSION=3.3
-
-# modules
-MODULES=auth cache database orm
+# composer executable
+COMPOSER=composer
 
 # cache and logs folders
 CACHE=application/cache
@@ -49,6 +44,47 @@ all: permissions clean minify
 # Include specific Makefile
 -include application/Makefile
 
+# sniff code for errors
+codesniffer:
+	$(PHPCS) $(PHPCSFLAGS) application/classes \
+		application/config \
+		application/i18n \
+		application/messages \
+		application/views
+
+# produce an html coverage
+coverage: clean
+	$(PHPUNIT) $(PHPUNITFLAGS) --coverage-html coverage
+
+# deploy an application
+deployment: deployment-git deployment-composer clean
+
+# pull and update submodules
+deployment-git:
+	git pull
+	git submodule update --init --recursive
+
+# update composer packages
+deployment-composer:
+	$(COMPOSER) install
+
+# generate the documentation
+documentation:
+	$(DOC) $(DOCFLAGS)
+
+# clean the kohana cache files
+clean:
+	rm -f $(shell find $(CACHE) -type f -not -name '.*')
+
+# minify resources
+minify: $(patsubst %.css, %.min.css, $(CSS)) $(patsubst %.js, %.min.js, $(JS))
+
+%.min.css: %.css
+	$(CSSM) $(CSSMFLAGS) $< > $@
+
+%.min.js: %.js
+	$(JSM) $(JSMFLAGS) $< > $@
+
 # update permissions and SELinux context
 permissions: permissions-mod permissions-selinux permissions-owner
 
@@ -62,35 +98,6 @@ permissions-selinux:
 permissions-owner:
 	chown -R $(USER):$(GROUP) $(CACHE) $(LOGS)
 
-# minify resources
-minify: $(patsubst %.css, %.min.css, $(CSS)) $(patsubst %.js, %.min.js, $(JS))
-
-%.min.css: %.css
-	$(CSSM) $(CSSMFLAGS) $< > $@
-
-%.min.js: %.js
-	$(JSM) $(JSMFLAGS) $< > $@
-
 # run unit tests
 test: clean
 	$(PHPUNIT) $(PHPUNITFLAGS)
-
-# produce an html coverage
-coverage: clean
-	$(PHPUNIT) $(PHPUNITFLAGS) --coverage-html coverage
-
-# generate the documentation
-documentation:
-	$(DOC) $(DOCFLAGS)
-
-# sniff code for errors
-codesniffer:
-	$(PHPCS) $(PHPCSFLAGS) application/classes \
-	                       application/config \
-						   application/i18n \
-						   application/messages \
-						   application/views
-
-# clean the kohana cache files
-clean:
-	rm -f $(shell find $(CACHE) -type f -not -name '.*')
