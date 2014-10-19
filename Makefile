@@ -1,9 +1,7 @@
 # Kohana Makefile
 #
-# apigen, composer, phpunit, phpcs, cssmin and uglifyjs are suggested
-#
-# You may override any of the preceeding tools in your specific Makefile located 
-# in application/Makefile
+# PHPUnit, ApiGen, cssmin and uglifyjs are suggested, but you can override them 
+# in a specific Makefile located in application/Makefile.
 
 # user and group for the web server
 USER=apache
@@ -34,6 +32,10 @@ JS=$(shell find assets/js/ -type f -name '*.js' -not -name '*.min.js')
 # phpunit
 PHPUNIT=phpunit
 PHPUNITFLAGS=
+
+# coverage
+COVERAGE=$(PHPUNIT)
+COVERAGEFLAGS=$(PHPUNITFLAGS) --coverage-html
 
 # phpcs
 PHPCS=phpcs
