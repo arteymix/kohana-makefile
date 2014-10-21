@@ -27,16 +27,29 @@ ln -s modules/makefile/Makefile Makefile
 Once installed, you can extend it by defining a Makefile in 
 `application/Makefile`:
 ```make
-CACHE += modules/twig/cache
+CSS=public/css/app.css
+JS=public/js/app.js 
+CACHE+=modules/twig/cache
 ```
 
 Then you run it
 ```bash
-make test        # run PHPUnit
-make clean       # delete the cache
-make minify      # minify resources in assets/js/* and assets/css/*
-make permissions # fix permissions and SELinux contexts on cache and logs
+make clean         # delete the cache
+make codesniffer   # sniff the code for errors
+make deployment    # deploy the application
+make documentation # generate the documentation
+make minify        # minify resources in assets/js/* and assets/css/*
+make permissions   # fix permissions and SELinux contexts on cache and logs
+make test          # test your application
 ```
 
-That would be really nice to have such a tool bundled with Kohana, so whenever
-it gets interesting, I will submit it.
+Deployment
+----------
+Makefile worries about your application deployment if you are using
+[git](https://git-scm.com) and [composer](http://getcomposer.org):
+```bash
+make deployment
+```
+Assuming you deploy your code using SSH, it will pull the code from the 
+remote-tracking branch, initialize and update submodules, install composer 
+dependencies and clean the cache.

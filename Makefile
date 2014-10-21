@@ -41,9 +41,10 @@ COVERAGEFLAGS=$(PHPUNITFLAGS) --coverage-html
 PHPCS=phpcs
 PHPCSFLAGS=
 
-all: permissions clean minify
+# do nothing..
+all:
 
-# Include specific Makefile
+# include specific Makefile
 -include application/Makefile
 
 # sniff code for errors
