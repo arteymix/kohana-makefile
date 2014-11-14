@@ -29,6 +29,9 @@ JSMFLAGS=
 CSS=$(shell find assets/css/ -type f -name '*.css' -not -name '*.min.css')
 JS=$(shell find assets/js/ -type f -name '*.js' -not -name '*.min.js')
 
+# phinx
+PHINX=phinx
+
 # phpunit
 PHPUNIT=phpunit
 PHPUNITFLAGS=
@@ -60,7 +63,7 @@ coverage: clean
 	$(PHPUNIT) $(PHPUNITFLAGS) --coverage-html coverage
 
 # deploy an application
-deployment: deployment-git deployment-composer clean
+deployment: deployment-git deployment-composer deployment-migrate clean
 
 # pull and update submodules
 deployment-git:
@@ -70,6 +73,10 @@ deployment-git:
 # update composer packages
 deployment-composer:
 	$(COMPOSER) install
+
+# migrate the database
+deployment-migrate:
+	$(PHINX) migrate
 
 # generate the documentation
 documentation:
