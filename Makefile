@@ -31,6 +31,7 @@ JS=$(shell find assets/js/ -type f -name '*.js' -not -name '*.min.js')
 
 # phinx
 PHINX=phinx
+PHINXFLAGS=
 
 # phpunit
 PHPUNIT=phpunit
@@ -63,7 +64,7 @@ coverage: clean
 	$(PHPUNIT) $(PHPUNITFLAGS) --coverage-html coverage
 
 # deploy an application
-deployment: deployment-git deployment-composer deployment-migrate clean
+deployment: deployment-git deployment-composer migration clean
 
 # pull and update submodules
 deployment-git:
@@ -74,10 +75,6 @@ deployment-git:
 deployment-composer:
 	$(COMPOSER) install
 
-# migrate the database
-deployment-migrate:
-	$(PHINX) migrate
-
 # generate the documentation
 documentation:
 	$(DOC) $(DOCFLAGS)
@@ -85,6 +82,10 @@ documentation:
 # clean the kohana cache files
 clean:
 	rm -f $(shell find $(CACHE) -type f -not -name '.*')
+
+# migrate the database
+migration:
+	$(PHINX) $(PHINXFLAGS) migrate
 
 # minify resources
 minify: $(patsubst %.css, %.min.css, $(CSS)) $(patsubst %.js, %.min.js, $(JS))
