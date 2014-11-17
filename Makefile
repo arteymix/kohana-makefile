@@ -34,7 +34,7 @@ JS=$(shell find assets/js/ -type f -name '*.js' -not -name '*.min.js')
 
 # phinx
 PHINX=phinx
-PHINXFLAGS=-e $(shell echo $(ENV) | tr [:upper:] [:lower:])
+PHINXFLAGS=
 
 # phpunit
 PHPUNIT=phpunit
@@ -88,7 +88,7 @@ clean:
 
 # migrate the database
 migration:
-	$(PHINX) $(PHINXFLAGS) migrate
+	$(PHINX) $(PHINXFLAGS) migrate -e $(shell echo $(ENV) | tr [:upper:] [:lower:])
 
 # minify resources
 minify: $(patsubst %.css, %.min.css, $(CSS)) $(patsubst %.js, %.min.js, $(JS))
