@@ -1,7 +1,10 @@
 # Kohana Makefile
 #
-# PHPUnit, ApiGen, cssmin and uglifyjs are suggested, but you can override them 
+# PHPUnit, ApiGen, cssmin and uglifyjs are suggested, but you can override them
 # in a specific Makefile located in application/Makefile.
+
+# Get Kohana environment from .htaccess
+ENV:=$(shell grep -oP "SetEnv\s+KOHANA_ENV\s+\K\w+" .htaccess)
 
 # user and group for the web server
 USER=apache
@@ -31,7 +34,7 @@ JS=$(shell find assets/js/ -type f -name '*.js' -not -name '*.min.js')
 
 # phinx
 PHINX=phinx
-PHINXFLAGS=
+PHINXFLAGS=-e $(shell echo $(ENV) | tr [:upper:] [:lower:])
 
 # phpunit
 PHPUNIT=phpunit
