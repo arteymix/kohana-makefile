@@ -12,11 +12,12 @@ So far, it
 ----------
 * detects Kohana environment if providen by a `.htaccess` file
 * cleans the cache
-* minify resources (js and css)
-* run PHPUnit tests
+* set permissions and SELinux contexts
+* minify js and css resources
+* run [PHPUnit](https://phpunit.de/) tests
 * generate the documentation
 * migrate your database if you use [Phinx](http://phinx.org/)
-* deploy your application
+* deploy your application using git, composer and Phinx
 * makes you efficient at doing everything above
 
 Installation

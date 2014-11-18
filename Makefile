@@ -2,6 +2,8 @@
 #
 # PHPUnit, ApiGen, cssmin and uglifyjs are suggested, but you can override them
 # in a specific Makefile located in application/Makefile.
+#
+# Environment is inferred from .htaccess 'SetEnv KOHANA_ENV' directive.
 
 # Get Kohana environment from .htaccess
 ENV:=$(shell grep -oP "SetEnv\s+KOHANA_ENV\s+\K\w+" .htaccess)
@@ -67,7 +69,7 @@ coverage: clean
 	$(PHPUNIT) $(PHPUNITFLAGS) --coverage-html coverage
 
 # deploy an application
-deployment: deployment-git deployment-composer migration clean
+deployment: deployment-git deployment-composer migration clean permissions
 
 # pull and update submodules
 deployment-git:
