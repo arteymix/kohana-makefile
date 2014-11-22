@@ -88,12 +88,15 @@ documentation:
 clean:
 	rm -f $(shell find $(CACHE) -type f -not -name '.*')
 
+# migrate the current environment
+migration: migration-$(shell echo $(ENV) | tr [:upper:] [:lower:])
+
 # migrate the database
-migration:
-	$(PHINX) $(PHINXFLAGS) migrate -e $(shell echo $(ENV) | tr [:upper:] [:lower:])
+migration-%:
+	$(PHINX) $(PHINXFLAGS) migrate --environment $(patsubst migration-%,%,$@)
 
 # minify resources
-minify: $(patsubst %.css, %.min.css, $(CSS)) $(patsubst %.js, %.min.js, $(JS))
+minify: $(patsubst %.css, %.min.css, $(CSS)) $(patsubst %.js,%.min.js,$(JS))
 
 %.min.css: %.css
 	$(CSSM) $(CSSMFLAGS) $< > $@
@@ -115,5 +118,5 @@ permissions-owner:
 	chown -R $(USER):$(GROUP) $(CACHE) $(LOGS)
 
 # run unit tests
-test: clean
+test: migration-testing clean
 	$(PHPUNIT) $(PHPUNITFLAGS)
