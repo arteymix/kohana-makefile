@@ -15,27 +15,35 @@ So far, it
 * set permissions and SELinux contexts
 * minify js and css resources
 * run [PHPUnit](https://phpunit.de/) tests
-* generate the documentation
+* generate the documentation with [ApiGen](http://apigen.org)
 * migrate your database if you use [Phinx](http://phinx.org/)
 * deploy your application using git, composer and Phinx
 * makes you efficient at doing everything above
 
 Installation
 ------------
+Get the `Makefile` from GitHub:
 ```bash
-git submodule add https://github.com/arteymix/kohana-makefile.git modules/makefile
-ln -s modules/makefile/Makefile Makefile
+wget https://raw.githubusercontent.com/arteymix/kohana-makefile/master/Makefile
 ```
 
-Once installed, you can extend it by defining a Makefile in
-`application/Makefile`:
+If you need to add a target of adjust a flag, you can proceed in a specific
+Makefile in `application/Makefile`, this one is automatically included if found.
 ```make
+# Specific overrides in application/Makefile
+
 CSS=public/css/app.css
 JS=public/js/app.js
+
+# add a cache folder
 CACHE+=modules/twig/cache
+
+# override executables
+PHPUNIT=vendor/bin/phpunit
+PHINX=vendor/bin/phinx
 ```
 
-Then you run it
+Then, you have a bunch of tools you can use
 ```bash
 make clean         # delete the cache
 make codesniffer   # sniff the code for errors
@@ -55,9 +63,10 @@ Makefile worries about your application deployment if you are using
 make deployment
 ```
 Assuming you deploy your code using SSH, it will pull the code from the
-remote-tracking branch, initialize and update submodules, install composer
-dependencies migrate your database and clean the cache.
+remote-tracking branch, initialize and update submodules recursively, install
+Composer dependencies migrate your database clean the cache and fix the
+permissions.
 
-Find a bug?
+Found a bug?
 -----------
 Open an issue or pull-request a fix on GitHub.
