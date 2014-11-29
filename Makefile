@@ -74,7 +74,7 @@ deployment: deployment-git deployment-composer migration clean permissions
 # pull and update submodules
 deployment-git:
 	git pull
-	git submodule sync --recursive
+	git submodule sync
 	git submodule update --init --recursive
 
 # update composer packages
