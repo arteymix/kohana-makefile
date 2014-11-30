@@ -67,6 +67,25 @@ remote-tracking branch, initialize and update submodules recursively, install
 Composer dependencies migrate your database clean the cache and fix the
 permissions.
 
+Travis CI integration
+---------------------
+A sample configuration file is providen to integrate this Makefile in your
+continuous integration workflow.
+```yml
+language: php
+
+php:
+    - 5.4
+    - 5.5
+    - 5.6
+
+install:
+    - make deployment ENV=testing
+
+script:
+    - make test
+```
+
 Found a bug?
------------
+------------
 Open an issue or pull-request a fix on GitHub.
