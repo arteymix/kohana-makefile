@@ -58,7 +58,9 @@ all:
 
 # sniff code for errors
 codesniffer:
-	$(PHPCS) $(PHPCSFLAGS) application/classes \
+	$(PHPCS) $(PHPCSFLAGS) \
+		application/bootstrap.php \
+		application/classes \
 		application/config \
 		application/i18n \
 		application/messages \
