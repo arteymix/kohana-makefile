@@ -52,6 +52,7 @@ PHPCSFLAGS=
 
 # do nothing..
 all:
+	php -S localhost:8080 --docroot public
 
 # include specific Makefile
 -include application/Makefile
