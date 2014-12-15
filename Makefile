@@ -6,7 +6,7 @@
 # Environment is inferred from .htaccess 'SetEnv KOHANA_ENV' directive.
 
 # Get Kohana environment from .htaccess
-ENV?=$(shell grep -oPs "SetEnv\s+KOHANA_ENV\s+\K\w+" public/.htaccess)
+ENV?=$(shell grep -oPs "SetEnv\s+KOHANA_ENV\s+\K\w+" public/.htaccess || echo DEVELOPMENT)
 
 # user and group for the web server
 USER=apache
