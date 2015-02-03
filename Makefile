@@ -82,7 +82,7 @@ deployment-git:
 
 # update composer packages
 deployment-composer:
-	$(COMPOSER) install
+	$(COMPOSER) install --optimize-autoloader
 
 # generate the documentation
 documentation:
