@@ -72,7 +72,7 @@ coverage: clean
 	$(PHPUNIT) $(PHPUNITFLAGS) --coverage-html coverage
 
 # deploy an application
-deployment: deployment-git deployment-composer migration clean permissions
+deployment: deployment-git deployment-composer migration clean
 
 # pull and update submodules
 deployment-git:
