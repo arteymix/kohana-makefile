@@ -115,8 +115,8 @@ permissions-mod:
 	chmod -R 777 $(CACHE) $(LOGS)
 
 permissions-selinux:
-	chcon -R -t httpd_sys_script_rw_t $(CACHE)
-	chcon -R -t httpd_sys_script_ra_t $(LOGS)
+	chcon -R unconfined_u:object_r:httpd_cache_t:s0 $(CACHE)
+	chcon -R unconfined_u:object_r:httpd_log_t:s0 $(LOGS)
 
 permissions-owner:
 	chown -R $(USER):$(GROUP) $(CACHE) $(LOGS)
