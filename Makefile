@@ -3,10 +3,6 @@
 # PHPUnit, ApiGen, cssmin and uglifyjs are suggested, but you can override them
 # in a specific Makefile located in application/Makefile.
 #
-# Environment is inferred from .htaccess 'SetEnv KOHANA_ENV' directive.
-
-# Get Kohana environment from .htaccess
-ENV?=$(shell grep -oPs "SetEnv\s+KOHANA_ENV\s+\K\w+" public/.htaccess || echo DEVELOPMENT)
 
 # user and group for the web server
 USER=apache
@@ -93,11 +89,8 @@ clean:
 	rm -f $(shell find $(CACHE) -type f -not -name '.*')
 
 # migrate the current environment
-migration: migration-$(shell echo $(ENV) | tr [:upper:] [:lower:])
-
-# migrate the database
-migration-%:
-	$(PHINX) $(PHINXFLAGS) migrate --environment $(patsubst migration-%,%,$@)
+migration:
+	$(PHINX) $(PHINXFLAGS) migrate
 
 # minify resources
 minify: $(patsubst %.css, %.min.css, $(CSS)) $(patsubst %.js,%.min.js,$(JS))
@@ -122,5 +115,5 @@ permissions-owner:
 	chown -R $(USER):$(GROUP) $(CACHE) $(LOGS)
 
 # run unit tests
-test: migration-testing clean
+test: migration clean
 	$(PHPUNIT) $(PHPUNITFLAGS)
