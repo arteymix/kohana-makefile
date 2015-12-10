@@ -12,6 +12,9 @@ ENV?=$(shell grep -oPs "SetEnv\s+KOHANA_ENV\s+\K\w+" public/.htaccess)
 USER=apache
 GROUP=apache
 
+# bower executable
+BOWER=bower
+
 # composer executable
 COMPOSER=composer
 
@@ -72,7 +75,7 @@ coverage: clean
 	$(PHPUNIT) $(PHPUNITFLAGS) --coverage-html coverage
 
 # deploy an application
-deployment: deployment-git deployment-composer migration clean
+deployment: deployment-git deployment-composer deployment-bower migration clean
 
 # pull and update submodules
 deployment-git:
@@ -83,6 +86,9 @@ deployment-git:
 # update composer packages
 deployment-composer:
 	$(COMPOSER) install --optimize-autoloader
+
+deployment-bower:
+	$(BOWER) install
 
 # generate the documentation
 documentation:
